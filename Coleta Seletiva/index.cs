@@ -75,10 +75,9 @@ namespace Coleta_Seletiva
                 }
             };
 
-            lista_verificacao.AutoGenerateColumns = false; // Importante!
+            lista_verificacao.AutoGenerateColumns = false;
             lista_verificacao.DataSource = residuos;
 
-            // Adicione as colunas manualmente
             lista_verificacao.Columns.Clear();
 
             // Colunas fixas (não editáveis)
@@ -106,8 +105,8 @@ namespace Coleta_Seletiva
             // Colunas editáveis (Identificação)
             lista_verificacao.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "IdentificacaoCf", // Ligado à propriedade do modelo
-                Name = "IdentificacaoCf", // Nome da coluna no DataGridView
+                DataPropertyName = "IdentificacaoCf", 
+                Name = "IdentificacaoCf",
                 HeaderText = "Identificação Conforme",
                 ReadOnly = false
             });
@@ -148,13 +147,11 @@ namespace Coleta_Seletiva
            
         }
 
-        private void GerarExcel(List<Residuo> residuos)
+        private void GerarExcel(List<Residuo> residuos, string caminhoExcel)
         {
             try
             {
-                var caminhoExcel = @"C:\Users\Rayan\Downloads\Coleta_Seletiva.xlsx";
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
                 FileInfo arquivoExcel = new FileInfo(caminhoExcel);
                 ExcelWorksheet ws;
 
@@ -250,12 +247,12 @@ namespace Coleta_Seletiva
 
             foreach (DataGridViewRow row in lista_verificacao.Rows)
             {
-                if (row.IsNewRow) continue; // Ignorar linha em branco
+                if (row.IsNewRow) continue;
 
-                int identificacaoCf = Convert.ToInt32(row.Cells["IdentificacaoCf"].Value ?? 0);
-                int identificacaoNcf = Convert.ToInt32(row.Cells["IdentificacaoNcf"].Value ?? 0);
-                int separacaoCf = Convert.ToInt32(row.Cells["SeparacaoCf"].Value ?? 0);
-                int separacaoNcf = Convert.ToInt32(row.Cells["SeparacaoNcf"].Value ?? 0);
+                int identificacaoCf = ObterValorInteiro(row.Cells["IdentificacaoCf"].Value);
+                int identificacaoNcf = ObterValorInteiro(row.Cells["IdentificacaoNcf"].Value);
+                int separacaoCf = ObterValorInteiro(row.Cells["SeparacaoCf"].Value);
+                int separacaoNcf = ObterValorInteiro(row.Cells["SeparacaoNcf"].Value);
 
                 int totalIdentificacao = identificacaoCf + identificacaoNcf;
                 int totalSeparacao = separacaoCf + separacaoNcf;
@@ -269,15 +266,39 @@ namespace Coleta_Seletiva
 
             if (dadosValidos)
             {
-                var residuos = (List<Residuo>)lista_verificacao.DataSource;
-                GerarExcel(residuos);
-                MessageBox.Show("Arquivo gerado com sucesso!");
+                using (SaveFileDialog saveDialog = new SaveFileDialog())
+                {
+                    saveDialog.Filter = "Arquivos Excel|*.xlsx";
+                    saveDialog.Title = "Salvar arquivo Excel";
+                    saveDialog.FileName = "Coleta_Seletiva.xlsx";
+
+                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var residuos = (List<Residuo>)lista_verificacao.DataSource;
+                        GerarExcel(residuos, saveDialog.FileName);
+
+                        // Limpar o DataGrid após salvar
+                        lista_verificacao.DataSource = null;
+                        lista_verificacao.Rows.Clear();
+
+                        txt_data.Text = string.Empty;
+                        cb_turno.SelectedIndex = -1;
+                        txt_modulo.Text = string.Empty;
+                        cb_ilha.SelectedIndex = -1;
+                        cb_equipe.SelectedIndex = -1;
+                        cb_avaliador.SelectedIndex = -1;
+
+                        // Recarregar dados iniciais se necessário
+                        Archive_Load(this, EventArgs.Empty);
+
+                        MessageBox.Show("Arquivo salvo com sucesso!");
+                    }
+                }
             }
             else
             {
                 MessageBox.Show("Corrija os dados destacados antes de salvar!");
             }
-
         }
 
         private void lista_verificacao_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -349,6 +370,13 @@ namespace Coleta_Seletiva
             {
                 row.DefaultCellStyle.BackColor = Color.White;
             }
+        }
+        private void LimparDataGrid()
+        {
+            lista_verificacao.DataSource = null;
+            lista_verificacao.Rows.Clear();
+            lista_verificacao.Columns.Clear();
+            lista_verificacao.Refresh();
         }
     }
 }

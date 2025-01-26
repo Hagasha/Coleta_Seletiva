@@ -35,7 +35,7 @@
             lbl_data = new Label();
             lbl_turno = new Label();
             lbl_modulo = new Label();
-            textBox1 = new TextBox();
+            txt_modulo = new TextBox();
             lbl_ilha = new Label();
             lbl_equipe = new Label();
             lbl_avaliador = new Label();
@@ -123,15 +123,15 @@
             lbl_modulo.TabIndex = 7;
             lbl_modulo.Text = "MÓDULO:";
             // 
-            // textBox1
+            // txt_modulo
             // 
-            textBox1.BackColor = Color.DeepSkyBlue;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Font = new Font("Segoe UI", 12F);
-            textBox1.Location = new Point(484, 145);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(129, 22);
-            textBox1.TabIndex = 8;
+            txt_modulo.BackColor = Color.DeepSkyBlue;
+            txt_modulo.BorderStyle = BorderStyle.None;
+            txt_modulo.Font = new Font("Segoe UI", 12F);
+            txt_modulo.Location = new Point(484, 145);
+            txt_modulo.Name = "txt_modulo";
+            txt_modulo.Size = new Size(129, 22);
+            txt_modulo.TabIndex = 8;
             // 
             // lbl_ilha
             // 
@@ -256,7 +256,7 @@
             Controls.Add(lbl_avaliador);
             Controls.Add(lbl_equipe);
             Controls.Add(lbl_ilha);
-            Controls.Add(textBox1);
+            Controls.Add(txt_modulo);
             Controls.Add(lbl_modulo);
             Controls.Add(lbl_turno);
             Controls.Add(lbl_data);
@@ -282,7 +282,7 @@
         private Label lbl_data;
         private Label lbl_turno;
         private Label lbl_modulo;
-        private TextBox textBox1;
+        private TextBox txt_modulo;
         private Label lbl_ilha;
         private Label lbl_equipe;
         private Label lbl_avaliador;
