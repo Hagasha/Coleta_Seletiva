@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Coleta_Seletiva</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.5.3" />
+    <PackageReference Include="itext7" Version="9.0.0" />
+    <PackageReference Include="QuestPDF" Version="2024.12.3" />
+  </ItemGroup>
+
+</Project>
