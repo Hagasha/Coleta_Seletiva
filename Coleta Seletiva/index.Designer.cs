@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txt_data = new TextBox();
             lbl_titulo = new Label();
             lbl_dados = new Label();
             Txt_dados = new Label();
@@ -46,34 +45,27 @@
             btn_salvar = new Button();
             lista_verificacao = new DataGridView();
             cb_turno = new ComboBox();
+            txt_data = new TextBox();
             ((System.ComponentModel.ISupportInitialize)lista_verificacao).BeginInit();
             SuspendLayout();
-            // 
-            // txt_data
-            // 
-            txt_data.BackColor = Color.DeepSkyBlue;
-            txt_data.BorderStyle = BorderStyle.None;
-            txt_data.Font = new Font("Segoe UI", 12F);
-            txt_data.Location = new Point(67, 145);
-            txt_data.Name = "txt_data";
-            txt_data.Size = new Size(129, 22);
-            txt_data.TabIndex = 0;
             // 
             // lbl_titulo
             // 
             lbl_titulo.BackColor = Color.DodgerBlue;
             lbl_titulo.BorderStyle = BorderStyle.FixedSingle;
+            lbl_titulo.Dock = DockStyle.Top;
             lbl_titulo.Font = new Font("Arial", 35F, FontStyle.Bold);
-            lbl_titulo.Location = new Point(-2, 0);
+            lbl_titulo.Location = new Point(0, 0);
             lbl_titulo.Margin = new Padding(10, 0, 3, 0);
             lbl_titulo.Name = "lbl_titulo";
-            lbl_titulo.Size = new Size(1188, 50);
+            lbl_titulo.Size = new Size(1184, 55);
             lbl_titulo.TabIndex = 1;
             lbl_titulo.Text = "AVALIAÇÃO DE EFICIÊNCIA DA COLETA SELETIVA";
+            lbl_titulo.TextAlign = ContentAlignment.TopCenter;
             // 
             // lbl_dados
             // 
-            lbl_dados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbl_dados.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbl_dados.BackColor = Color.DodgerBlue;
             lbl_dados.Font = new Font("Arial", 18F);
             lbl_dados.ForeColor = SystemColors.ButtonHighlight;
@@ -85,8 +77,9 @@
             // 
             // Txt_dados
             // 
-            Txt_dados.AutoEllipsis = true;
+            Txt_dados.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             Txt_dados.Font = new Font("Segoe UI", 12F);
+            Txt_dados.ForeColor = SystemColors.ActiveCaptionText;
             Txt_dados.Location = new Point(6, 94);
             Txt_dados.Name = "Txt_dados";
             Txt_dados.Size = new Size(1154, 45);
@@ -95,6 +88,7 @@
             // 
             // lbl_data
             // 
+            lbl_data.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_data.Font = new Font("Segoe UI", 11F);
             lbl_data.ForeColor = Color.MidnightBlue;
             lbl_data.Location = new Point(12, 145);
@@ -115,9 +109,10 @@
             // 
             // lbl_modulo
             // 
+            lbl_modulo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_modulo.Font = new Font("Segoe UI", 11F);
             lbl_modulo.ForeColor = Color.MidnightBlue;
-            lbl_modulo.Location = new Point(404, 144);
+            lbl_modulo.Location = new Point(405, 144);
             lbl_modulo.Name = "lbl_modulo";
             lbl_modulo.Size = new Size(74, 20);
             lbl_modulo.TabIndex = 7;
@@ -128,16 +123,17 @@
             txt_modulo.BackColor = Color.DeepSkyBlue;
             txt_modulo.BorderStyle = BorderStyle.None;
             txt_modulo.Font = new Font("Segoe UI", 12F);
-            txt_modulo.Location = new Point(484, 145);
+            txt_modulo.Location = new Point(485, 144);
             txt_modulo.Name = "txt_modulo";
             txt_modulo.Size = new Size(129, 22);
             txt_modulo.TabIndex = 8;
             // 
             // lbl_ilha
             // 
+            lbl_ilha.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_ilha.Font = new Font("Segoe UI", 11F);
             lbl_ilha.ForeColor = Color.MidnightBlue;
-            lbl_ilha.Location = new Point(619, 145);
+            lbl_ilha.Location = new Point(620, 144);
             lbl_ilha.Name = "lbl_ilha";
             lbl_ilha.Size = new Size(51, 20);
             lbl_ilha.TabIndex = 9;
@@ -145,9 +141,10 @@
             // 
             // lbl_equipe
             // 
+            lbl_equipe.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_equipe.Font = new Font("Segoe UI", 11F);
             lbl_equipe.ForeColor = Color.MidnightBlue;
-            lbl_equipe.Location = new Point(801, 145);
+            lbl_equipe.Location = new Point(812, 146);
             lbl_equipe.Name = "lbl_equipe";
             lbl_equipe.Size = new Size(74, 20);
             lbl_equipe.TabIndex = 11;
@@ -155,6 +152,7 @@
             // 
             // lbl_avaliador
             // 
+            lbl_avaliador.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_avaliador.Font = new Font("Segoe UI", 11F);
             lbl_avaliador.ForeColor = Color.MidnightBlue;
             lbl_avaliador.Location = new Point(12, 185);
@@ -178,7 +176,7 @@
             cb_equipe.BackColor = Color.DeepSkyBlue;
             cb_equipe.FormattingEnabled = true;
             cb_equipe.Items.AddRange(new object[] { "Buyoff", "Equipe 1 e 2", "Equipe 3 e 4", "Equipe 5", "Equipe 6", "Equipe 7" });
-            cb_equipe.Location = new Point(862, 145);
+            cb_equipe.Location = new Point(892, 144);
             cb_equipe.Name = "cb_equipe";
             cb_equipe.Size = new Size(129, 23);
             cb_equipe.TabIndex = 18;
@@ -188,14 +186,14 @@
             cb_ilha.BackColor = Color.DeepSkyBlue;
             cb_ilha.FormattingEnabled = true;
             cb_ilha.Items.AddRange(new object[] { "Ilha 1", "Ilha 2", "Ilha 3", "Ilha 4", "Ilha 5", "Ilha 7" });
-            cb_ilha.Location = new Point(666, 145);
+            cb_ilha.Location = new Point(677, 143);
             cb_ilha.Name = "cb_ilha";
             cb_ilha.Size = new Size(129, 23);
             cb_ilha.TabIndex = 19;
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label1.BackColor = Color.DodgerBlue;
             label1.Font = new Font("Arial", 18F);
             label1.ForeColor = SystemColors.ButtonHighlight;
@@ -220,6 +218,7 @@
             // 
             // lista_verificacao
             // 
+            lista_verificacao.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lista_verificacao.BackgroundColor = SystemColors.ButtonHighlight;
             lista_verificacao.BorderStyle = BorderStyle.None;
             lista_verificacao.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -240,12 +239,23 @@
             cb_turno.Size = new Size(129, 23);
             cb_turno.TabIndex = 23;
             // 
+            // txt_data
+            // 
+            txt_data.BackColor = Color.DeepSkyBlue;
+            txt_data.BorderStyle = BorderStyle.None;
+            txt_data.Font = new Font("Segoe UI", 12F);
+            txt_data.Location = new Point(67, 142);
+            txt_data.Name = "txt_data";
+            txt_data.Size = new Size(129, 22);
+            txt_data.TabIndex = 24;
+            // 
             // Archive
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonHighlight;
             ClientSize = new Size(1184, 681);
+            Controls.Add(txt_data);
             Controls.Add(cb_turno);
             Controls.Add(lista_verificacao);
             Controls.Add(btn_salvar);
@@ -263,7 +273,6 @@
             Controls.Add(Txt_dados);
             Controls.Add(lbl_dados);
             Controls.Add(lbl_titulo);
-            Controls.Add(txt_data);
             ForeColor = SystemColors.ControlLightLight;
             Name = "Archive";
             Text = "Avaliação da Coleta Seletiva";
@@ -274,8 +283,6 @@
         }
 
         #endregion
-
-        private TextBox txt_data;
         private Label lbl_titulo;
         private Label lbl_dados;
         private Label Txt_dados;
@@ -293,5 +300,6 @@
         private Button btn_salvar;
         private DataGridView lista_verificacao;
         private ComboBox cb_turno;
+        private TextBox txt_data;
     }
 }

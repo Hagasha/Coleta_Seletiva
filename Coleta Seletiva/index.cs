@@ -85,7 +85,7 @@ namespace Coleta_Seletiva
             {
                 DataPropertyName = "Etiqueta",
                 HeaderText = "Etiqueta",
-                ReadOnly = true
+                ReadOnly = true,
             });
 
             lista_verificacao.Columns.Add(new DataGridViewTextBoxColumn
@@ -105,10 +105,14 @@ namespace Coleta_Seletiva
             // Colunas editáveis (Identificação)
             lista_verificacao.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "IdentificacaoCf", 
+                DataPropertyName = "IdentificacaoCf",
                 Name = "IdentificacaoCf",
                 HeaderText = "Identificação Conforme",
-                ReadOnly = false
+                ReadOnly = false,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                }
             });
 
             lista_verificacao.Columns.Add(new DataGridViewTextBoxColumn
@@ -116,7 +120,11 @@ namespace Coleta_Seletiva
                 DataPropertyName = "IdentificacaoNcf",
                 Name = "IdentificacaoNcf",
                 HeaderText = "Identificação Não Conforme",
-                ReadOnly = false
+                ReadOnly = false,
+                 DefaultCellStyle = new DataGridViewCellStyle
+                 {
+                     Alignment = DataGridViewContentAlignment.MiddleCenter // Centraliza o conteúdo
+                 }
             });
 
             // Colunas editáveis (Separação)
@@ -125,7 +133,11 @@ namespace Coleta_Seletiva
                 DataPropertyName = "SeparacaoCf",
                 Name = "SeparacaoCf",
                 HeaderText = "Separação Conforme",
-                ReadOnly = false
+                ReadOnly = false,
+                 DefaultCellStyle = new DataGridViewCellStyle
+                 {
+                     Alignment = DataGridViewContentAlignment.MiddleCenter // Centraliza o conteúdo
+                 }
             });
 
             lista_verificacao.Columns.Add(new DataGridViewTextBoxColumn
@@ -133,7 +145,11 @@ namespace Coleta_Seletiva
                 DataPropertyName = "SeparacaoNcf",
                 Name = "SeparacaoNcf",
                 HeaderText = "Separação Não Conforme",
-                ReadOnly = false
+                ReadOnly = false,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter // Centraliza o conteúdo
+                }
             });
             foreach (DataGridViewColumn column in lista_verificacao.Columns)
             {
@@ -144,7 +160,7 @@ namespace Coleta_Seletiva
 
         private void GerarPDF(List<Residuo> residuos)
         {
-           
+
         }
 
         private void GerarExcel(List<Residuo> residuos, string caminhoExcel)
@@ -202,7 +218,7 @@ namespace Coleta_Seletiva
 
                         int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
                         double porcentSep = totalSep > 0 ?
-                            Math.Round((double)residuo.SeparacaoCf / totalSep, 4) : 0; 
+                            Math.Round((double)residuo.SeparacaoCf / totalSep, 4) : 0;
 
 
                         // Preencher dados
