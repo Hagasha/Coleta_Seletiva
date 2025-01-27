@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Archive));
             lbl_titulo = new Label();
             lbl_dados = new Label();
             Txt_dados = new Label();
@@ -274,6 +275,7 @@
             Controls.Add(lbl_dados);
             Controls.Add(lbl_titulo);
             ForeColor = SystemColors.ControlLightLight;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Archive";
             Text = "Avaliação da Coleta Seletiva";
             Load += Archive_Load;
