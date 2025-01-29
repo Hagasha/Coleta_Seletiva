@@ -31,22 +31,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Archive));
             lbl_titulo = new Label();
             lbl_dados = new Label();
-            Txt_dados = new Label();
+            txt_dados = new Label();
             lbl_data = new Label();
             lbl_turno = new Label();
             lbl_modulo = new Label();
-            txt_modulo = new TextBox();
             lbl_ilha = new Label();
             lbl_equipe = new Label();
             lbl_avaliador = new Label();
             cb_avaliador = new ComboBox();
             cb_equipe = new ComboBox();
             cb_ilha = new ComboBox();
-            label1 = new Label();
+            lbl_lista = new Label();
             btn_salvar = new Button();
             lista_verificacao = new DataGridView();
             cb_turno = new ComboBox();
             txt_data = new TextBox();
+            lbl_nome = new Label();
+            txt_nome = new TextBox();
+            cb_modulo = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)lista_verificacao).BeginInit();
             SuspendLayout();
             // 
@@ -76,16 +78,16 @@
             lbl_dados.TabIndex = 2;
             lbl_dados.Text = "DADOS DA INSPEÇÃO";
             // 
-            // Txt_dados
+            // txt_dados
             // 
-            Txt_dados.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            Txt_dados.Font = new Font("Segoe UI", 12F);
-            Txt_dados.ForeColor = SystemColors.ActiveCaptionText;
-            Txt_dados.Location = new Point(6, 94);
-            Txt_dados.Name = "Txt_dados";
-            Txt_dados.Size = new Size(1154, 45);
-            Txt_dados.TabIndex = 3;
-            Txt_dados.Text = "Durante a avaliação da coleta seletiva, é fundamental verificar três aspectos principais: a identificação dos coletores, as condições físicas dos coletores e a correta separação dos resíduos.\r\n\r\n";
+            txt_dados.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txt_dados.Font = new Font("Segoe UI", 12F);
+            txt_dados.ForeColor = SystemColors.ActiveCaptionText;
+            txt_dados.Location = new Point(6, 94);
+            txt_dados.Name = "txt_dados";
+            txt_dados.Size = new Size(1154, 45);
+            txt_dados.TabIndex = 3;
+            txt_dados.Text = "Durante a avaliação da coleta seletiva, é fundamental verificar três aspectos principais: a identificação dos coletores, as condições físicas dos coletores e a correta separação dos resíduos.\r\n\r\n";
             // 
             // lbl_data
             // 
@@ -118,16 +120,6 @@
             lbl_modulo.Size = new Size(74, 20);
             lbl_modulo.TabIndex = 7;
             lbl_modulo.Text = "MÓDULO:";
-            // 
-            // txt_modulo
-            // 
-            txt_modulo.BackColor = Color.DeepSkyBlue;
-            txt_modulo.BorderStyle = BorderStyle.None;
-            txt_modulo.Font = new Font("Segoe UI", 12F);
-            txt_modulo.Location = new Point(485, 144);
-            txt_modulo.Name = "txt_modulo";
-            txt_modulo.Size = new Size(129, 22);
-            txt_modulo.TabIndex = 8;
             // 
             // lbl_ilha
             // 
@@ -192,26 +184,26 @@
             cb_ilha.Size = new Size(129, 23);
             cb_ilha.TabIndex = 19;
             // 
-            // label1
+            // lbl_lista
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            label1.BackColor = Color.DodgerBlue;
-            label1.Font = new Font("Arial", 18F);
-            label1.ForeColor = SystemColors.ButtonHighlight;
-            label1.Location = new Point(6, 220);
-            label1.Name = "label1";
-            label1.Size = new Size(1160, 32);
-            label1.TabIndex = 20;
-            label1.Text = "LISTA DE VERIFICAÇÃO";
+            lbl_lista.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lbl_lista.BackColor = Color.DodgerBlue;
+            lbl_lista.Font = new Font("Arial", 18F);
+            lbl_lista.ForeColor = SystemColors.ButtonHighlight;
+            lbl_lista.Location = new Point(6, 220);
+            lbl_lista.Name = "lbl_lista";
+            lbl_lista.Size = new Size(1160, 32);
+            lbl_lista.TabIndex = 20;
+            lbl_lista.Text = "LISTA DE VERIFICAÇÃO";
             // 
             // btn_salvar
             // 
             btn_salvar.BackColor = Color.MidnightBlue;
             btn_salvar.BackgroundImageLayout = ImageLayout.None;
             btn_salvar.FlatStyle = FlatStyle.Flat;
-            btn_salvar.Location = new Point(259, 186);
+            btn_salvar.Location = new Point(529, 184);
             btn_salvar.Name = "btn_salvar";
-            btn_salvar.Size = new Size(139, 23);
+            btn_salvar.Size = new Size(142, 31);
             btn_salvar.TabIndex = 21;
             btn_salvar.Text = "Salvar";
             btn_salvar.UseVisualStyleBackColor = false;
@@ -250,28 +242,61 @@
             txt_data.Size = new Size(129, 22);
             txt_data.TabIndex = 24;
             // 
+            // lbl_nome
+            // 
+            lbl_nome.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lbl_nome.Font = new Font("Segoe UI", 11F);
+            lbl_nome.ForeColor = Color.MidnightBlue;
+            lbl_nome.Location = new Point(256, 189);
+            lbl_nome.Name = "lbl_nome";
+            lbl_nome.Size = new Size(95, 20);
+            lbl_nome.TabIndex = 25;
+            lbl_nome.Text = "NOME:";
+            // 
+            // txt_nome
+            // 
+            txt_nome.BackColor = Color.DeepSkyBlue;
+            txt_nome.BorderStyle = BorderStyle.None;
+            txt_nome.Font = new Font("Segoe UI", 12F);
+            txt_nome.Location = new Point(314, 187);
+            txt_nome.Name = "txt_nome";
+            txt_nome.Size = new Size(196, 22);
+            txt_nome.TabIndex = 26;
+            // 
+            // cb_modulo
+            // 
+            cb_modulo.BackColor = Color.DeepSkyBlue;
+            cb_modulo.FormattingEnabled = true;
+            cb_modulo.Items.AddRange(new object[] { "Carese Armacao", "Carese Pintura", "Kroschu", "Maxion", "Meritor", "PWT" });
+            cb_modulo.Location = new Point(485, 142);
+            cb_modulo.Name = "cb_modulo";
+            cb_modulo.Size = new Size(129, 23);
+            cb_modulo.TabIndex = 27;
+            // 
             // Archive
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonHighlight;
             ClientSize = new Size(1184, 681);
+            Controls.Add(cb_modulo);
+            Controls.Add(txt_nome);
+            Controls.Add(lbl_nome);
             Controls.Add(txt_data);
             Controls.Add(cb_turno);
             Controls.Add(lista_verificacao);
             Controls.Add(btn_salvar);
-            Controls.Add(label1);
+            Controls.Add(lbl_lista);
             Controls.Add(cb_ilha);
             Controls.Add(cb_equipe);
             Controls.Add(cb_avaliador);
             Controls.Add(lbl_avaliador);
             Controls.Add(lbl_equipe);
             Controls.Add(lbl_ilha);
-            Controls.Add(txt_modulo);
             Controls.Add(lbl_modulo);
             Controls.Add(lbl_turno);
             Controls.Add(lbl_data);
-            Controls.Add(Txt_dados);
+            Controls.Add(txt_dados);
             Controls.Add(lbl_dados);
             Controls.Add(lbl_titulo);
             ForeColor = SystemColors.ControlLightLight;
@@ -287,21 +312,23 @@
         #endregion
         private Label lbl_titulo;
         private Label lbl_dados;
-        private Label Txt_dados;
+        private Label txt_dados;
         private Label lbl_data;
         private Label lbl_turno;
         private Label lbl_modulo;
-        private TextBox txt_modulo;
         private Label lbl_ilha;
         private Label lbl_equipe;
         private Label lbl_avaliador;
         private ComboBox cb_avaliador;
         private ComboBox cb_equipe;
         private ComboBox cb_ilha;
-        private Label label1;
+        private Label lbl_lista;
         private Button btn_salvar;
         private DataGridView lista_verificacao;
         private ComboBox cb_turno;
         private TextBox txt_data;
+        private Label lbl_nome;
+        private TextBox txt_nome;
+        private ComboBox cb_modulo;
     }
 }

@@ -11,13 +11,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Contaminado.png" />
+    <None Remove="Images\Madeira.png" />
+    <None Remove="Images\Metal.png" />
+    <None Remove="Images\NaoReciclavel.png" />
+    <None Remove="Images\Organico.png" />
+    <None Remove="Images\Papel.png" />
+    <None Remove="Images\Plastico.png" />
+    <None Remove="Images\Vidro.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Contaminado.png" />
+    <EmbeddedResource Include="Images\Madeira.png" />
+    <EmbeddedResource Include="Images\Metal.png" />
+    <EmbeddedResource Include="Images\NaoReciclavel.png" />
+    <EmbeddedResource Include="Images\Organico.png" />
+    <EmbeddedResource Include="Images\Papel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\Plastico.png" />
+    <EmbeddedResource Include="Images\Vidro.png" />
     <Content Include="MAXSC_LOGO.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="7.5.3" />
-    <PackageReference Include="itext7" Version="9.0.0" />
-    <PackageReference Include="QuestPDF" Version="2024.12.3" />
   </ItemGroup>
 
 </Project>
