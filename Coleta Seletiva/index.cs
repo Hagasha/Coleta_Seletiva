@@ -12,11 +12,17 @@ using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Table;
 using OfficeOpenXml.Drawing;
 using System.Reflection.Emit;
+using System.Drawing.Imaging;
+using System.Globalization;
 
 namespace Coleta_Seletiva
 {
     public partial class Archive : Form
     {
+        private const string CAMINHO_BASE = @"\\VWTBRESHFSCO\Modulos\Maxion\POWER_BI\Arquivos Coleta Seletiva";
+        private const string CAMINHO_SCREENSHOTS = @"\\VWTBRESHFSCO\Modulos\Maxion\POWER_BI\Arquivos Coleta Seletiva\Screenshots";
+        private const string NOME_ARQUIVO_EXCEL = "Coleta_Seletiva.xlsx";
+
         public Archive()
         {
             InitializeComponent();
@@ -24,7 +30,60 @@ namespace Coleta_Seletiva
             lista_verificacao.RowPostPaint += lista_verificacao_RowPostPaint;
         }
 
-        private Image CarregarImagemDeRecurso(string nomeImagem)
+        private void ValidarFormatoData(TextBox textBox)
+        {
+            if (!string.IsNullOrEmpty(textBox.Text))
+            {
+                DateTime data;
+                if (!DateTime.TryParseExact(textBox.Text, "dd/MM/yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None, out data))
+                {
+                    MessageBox.Show("Por favor, insira a data no formato dd/mm/yyyy");
+                    textBox.Text = "";
+                }
+            }
+        }
+
+        private void txt_data_Leave(object sender, EventArgs e)
+        {
+            ValidarFormatoData(txt_data);
+        }
+
+        private void CaptureFormScreenshot()
+        {
+            try
+            {
+                using (Bitmap bitmap = new Bitmap(this.Width, this.Height))
+                {
+                    this.DrawToBitmap(bitmap, new Rectangle(0, 0, this.Width, this.Height));
+
+                    // Obter o conteúdo dos controles
+                    string ilha = cb_ilha.Text;
+                    string nome = txt_nome.Text;
+                    string data = txt_data.Text.Replace("/", ""); ;
+
+                    // Criar diretório se não existir
+                    if (!Directory.Exists(CAMINHO_SCREENSHOTS))
+                    {
+                        Directory.CreateDirectory(CAMINHO_SCREENSHOTS);
+                    }
+
+                    // Definir o caminho completo do arquivo
+                    string caminhoCompleto = Path.Combine(CAMINHO_SCREENSHOTS, $"avaliacao_{ilha}_{nome}_{data}.png");
+
+                    // Salvar a imagem diretamente no local especificado
+                    bitmap.Save(caminhoCompleto, ImageFormat.Png);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao capturar screenshot: {ex.Message}");
+            }
+        }
+
+    private Image CarregarImagemDeRecurso(string nomeImagem)
         {
             try
             {
@@ -46,7 +105,8 @@ namespace Coleta_Seletiva
 
         private void Archive_Load(object sender, EventArgs e)
         {
-            var residuos = new List<Residuo>
+            // No Archive_Load, ao carregar os resíduos:
+            var listaResiduos = new List<Residuo>
             {
                 new Residuo
                 {
@@ -107,7 +167,7 @@ namespace Coleta_Seletiva
             };
 
             lista_verificacao.AutoGenerateColumns = false;
-            lista_verificacao.DataSource = residuos;
+            lista_verificacao.DataSource = listaResiduos;
 
             lista_verificacao.Columns.Clear();
 
@@ -198,7 +258,27 @@ namespace Coleta_Seletiva
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 column.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             };
-        }
+
+            if (!string.IsNullOrEmpty(txt_data.Text))
+            {
+                DateTime data;
+                if (DateTime.TryParseExact(txt_data.Text, "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out data))
+                {
+                    foreach (var residuo in listaResiduos)
+                    {
+                        residuo.Ano = data.Year;
+                        residuo.Mes = data.Month;
+                        residuo.Semana = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+                            data,
+                            CalendarWeekRule.FirstFourDayWeek,
+                            DayOfWeek.Monday);
+                    }
+                }
+            }
+            }
 
         private void GerarNome(List<Residuo> residuos, string caminho)
         {
@@ -284,139 +364,59 @@ namespace Coleta_Seletiva
                     else
                     {
                         ws = pkg.Workbook.Worksheets.Add("Resíduos");
-                        // Cabeçalho inicial
+                        // Novo cabeçalho com ordem atualizada
                         ws.Cells["A1"].Value = "Data";
-                        ws.Cells["B1"].Value = "Avaliador";
-                        ws.Cells["C1"].Value = "Turno";
-                        ws.Cells["D1"].Value = "Ilha";
-                        ws.Cells["E1"].Value = "Equipe";
-                        ws.Cells["F1"].Value = "Tipo Resíduo";
-                        ws.Cells["G1"].Value = "Total (Ident)";
-                        ws.Cells["H1"].Value = "Qtd Conforme (Ident)";
-                        ws.Cells["I1"].Value = "Qtd Não Conforme (Ident)";
-                        ws.Cells["J1"].Value = "% Identificação";
-                        ws.Cells["K1"].Value = "Total (Sep)";
-                        ws.Cells["L1"].Value = "Qtd Conforme (Sep)";
-                        ws.Cells["M1"].Value = "Qtd Não Conforme (Sep)";
-                        ws.Cells["N1"].Value = "% Separação";
-                        ws.Cells["O1"].Value = "Meta";
+                        ws.Cells["B1"].Value = "Ano";
+                        ws.Cells["C1"].Value = "Mês";
+                        ws.Cells["D1"].Value = "Semana";
+                        ws.Cells["E1"].Value = "Avaliador";
+                        ws.Cells["F1"].Value = "Turno";
+                        ws.Cells["G1"].Value = "Ilha";
+                        ws.Cells["H1"].Value = "Eficiência";
+                        ws.Cells["I1"].Value = "Meta";
                     }
 
                     int linhaAtual = ws.Dimension?.End.Row + 1 ?? 2;
 
                     foreach (var residuo in residuos)
                     {
-                        // Calcular totais e porcentagens
-                        int totalIdent = residuo.IdentificacaoCf + residuo.IdentificacaoNcf;
-                        double porcentIdent = totalIdent > 0 ?
-                            Math.Round((double)residuo.IdentificacaoCf / totalIdent * 100, 2) : 0;
+                        // Parsear a data corretamente
+                        DateTime data = DateTime.ParseExact(txt_data.Text, "dd/MM/yyyy",
+                            CultureInfo.InvariantCulture);
 
-                        int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
-                        double porcentSep = totalSep > 0 ?
-                            Math.Round((double)residuo.SeparacaoCf / totalSep * 100, 2) : 0;
+                        // Atualizar os valores de ano, mês e semana no objeto residuo
+                        residuo.Ano = data.Year;
+                        residuo.Mes = data.Month;
+                        residuo.Semana = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+                            data,
+                            CalendarWeekRule.FirstFourDayWeek,
+                            DayOfWeek.Monday);
 
-                        // Preencher dados
-                        ws.Cells[$"A{linhaAtual}"].Value = txt_data.Text;
-                        ws.Cells[$"B{linhaAtual}"].Value = cb_avaliador.Text;
-                        ws.Cells[$"C{linhaAtual}"].Value = cb_turno.Text;
-                        ws.Cells[$"D{linhaAtual}"].Value = cb_ilha.Text;
-                        ws.Cells[$"E{linhaAtual}"].Value = cb_equipe.Text;
-                        ws.Cells[$"F{linhaAtual}"].Value = residuo.Tipo;
-                        ws.Cells[$"G{linhaAtual}"].Value = totalIdent;
-                        ws.Cells[$"H{linhaAtual}"].Value = residuo.IdentificacaoCf;
-                        ws.Cells[$"I{linhaAtual}"].Value = residuo.IdentificacaoNcf;
-                        ws.Cells[$"J{linhaAtual}"].Value = porcentIdent / 100;
-                        ws.Cells[$"K{linhaAtual}"].Value = totalSep;
-                        ws.Cells[$"L{linhaAtual}"].Value = residuo.SeparacaoCf;
-                        ws.Cells[$"M{linhaAtual}"].Value = residuo.SeparacaoNcf;
-                        ws.Cells[$"N{linhaAtual}"].Value = porcentSep / 100;
-                        ws.Cells[$"O{linhaAtual}"].Value = 0.8; // Meta de 80%
+                        // Cálculo da eficiência
+                        double eficiencia = CalcularEficiencia(residuo);
 
-                        ws.Cells[$"J{linhaAtual}"].Style.Numberformat.Format = "0.00%";
-                        ws.Cells[$"N{linhaAtual}"].Style.Numberformat.Format = "0.00%";
-                        ws.Cells[$"O{linhaAtual}"].Style.Numberformat.Format = "0.00%";
+                        // Preencher dados na nova ordem
+                        ws.Cells[$"A{linhaAtual}"].Value = data;
+                        ws.Cells[$"B{linhaAtual}"].Value = residuo.Ano;
+                        ws.Cells[$"C{linhaAtual}"].Value = residuo.Mes;
+                        ws.Cells[$"D{linhaAtual}"].Value = residuo.Semana;
+                        ws.Cells[$"E{linhaAtual}"].Value = cb_avaliador.Text;
+                        ws.Cells[$"F{linhaAtual}"].Value = cb_turno.Text;
+                        ws.Cells[$"G{linhaAtual}"].Value = cb_ilha.Text;
+                        ws.Cells[$"H{linhaAtual}"].Value = eficiencia;
+                        ws.Cells[$"I{linhaAtual}"].Value = 0.8; // Meta 80%
+
+                        ws.Cells[$"H{linhaAtual}"].Style.Numberformat.Format = "0.00%";
+                        ws.Cells[$"I{linhaAtual}"].Style.Numberformat.Format = "0.00%";
 
                         linhaAtual++;
                     }
 
-                    // Obter a tabela existente
-                    var table = ws.Tables.FirstOrDefault(t => t.Name == "TabelaResiduos");
-                    if (table != null)
-                    {
-                        // Excluir a tabela antiga
-                        ws.Tables.Delete(table);
+                    // Configurar tabela
+                    ConfigurarTabela(ws, linhaAtual);
 
-                        // Criar uma nova tabela com o intervalo expandido
-                        var tableRange = ws.Cells[$"A1:O{linhaAtual - 1}"];
-                        table = ws.Tables.Add(tableRange, "TabelaResiduos");
-                        table.TableStyle = OfficeOpenXml.Table.TableStyles.Medium2;
-                    }
-                    else
-                    {
-                        // Criar nova tabela se não houver
-                        var tableRange = ws.Cells[$"A1:O{linhaAtual - 1}"];
-                        table = ws.Tables.Add(tableRange, "TabelaResiduos");
-                        table.TableStyle = OfficeOpenXml.Table.TableStyles.Medium2;
-                    }
-
-                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
-
-                    // Agrupar e somar os resíduos por tipo
-                    var residuosAgrupados = residuos.GroupBy(r => r.Tipo).Select(g => new
-                    {
-                        Tipo = g.Key,
-                        TotalIdent = g.Sum(r => r.IdentificacaoCf + r.IdentificacaoNcf),
-                        TotalSep = g.Sum(r => r.SeparacaoCf + r.SeparacaoNcf)
-                    }).ToList();
-
-                    // Create Chart worksheet
-                    wsGrafico = pkg.Workbook.Worksheets.Any(s => s.Name == "Gráfico") ?
-                        pkg.Workbook.Worksheets["Gráfico"] :
-                        pkg.Workbook.Worksheets.Add("Gráfico");
-
-                    // Clear existing charts
-                    wsGrafico.Drawings.Clear();
-
-                    // Adicionar dados agrupados ao gráfico
-                    linhaAtual = 1;
-                    wsGrafico.Cells[$"A{linhaAtual}"].Value = "Tipo Resíduo";
-                    wsGrafico.Cells[$"B{linhaAtual}"].Value = "Total Ident";
-                    wsGrafico.Cells[$"C{linhaAtual}"].Value = "Total Sep";
-                    linhaAtual++;
-
-                    foreach (var grupo in residuosAgrupados)
-                    {
-                        wsGrafico.Cells[$"A{linhaAtual}"].Value = grupo.Tipo;
-                        wsGrafico.Cells[$"B{linhaAtual}"].Value = grupo.TotalIdent;
-                        wsGrafico.Cells[$"C{linhaAtual}"].Value = grupo.TotalSep;
-                        linhaAtual++;
-                    }
-
-                    // Create chart
-                    var chartName = "Desempenho";
-                    int chartIndex = 1;
-                    while (wsGrafico.Drawings.Any(d => d.Name == chartName))
-                    {
-                        chartName = $"Desempenho{chartIndex}";
-                        chartIndex++;
-                    }
-                    var chart = wsGrafico.Drawings.AddChart(chartName, eChartType.ColumnClustered);
-
-                    // Configure chart series
-                    var totalIdentSeries = chart.Series.Add(wsGrafico.Cells[$"B2:B{linhaAtual - 1}"],
-                        wsGrafico.Cells[$"A2:A{linhaAtual - 1}"]);
-                    totalIdentSeries.Header = "Total Ident";
-
-                    var totalSepSeries = chart.Series.Add(wsGrafico.Cells[$"C2:C{linhaAtual - 1}"],
-                        wsGrafico.Cells[$"A2:A{linhaAtual - 1}"]);
-                    totalSepSeries.Header = "Total Sep";
-
-                    // Configure chart
-                    chart.SetPosition(1, 0, 1, 0);
-                    chart.SetSize(800, 400);
-                    chart.Title.Text = "Desempenho por Tipo de Resíduo";
-                    chart.XAxis.Title.Text = "Tipo de Resíduo";
-                    chart.YAxis.Title.Text = "Quantidade";
+                    // Criar gráfico atualizado
+                    CriarGraficoEficiencia(pkg, residuos);
 
                     pkg.Save();
                 }
@@ -429,6 +429,146 @@ namespace Coleta_Seletiva
             }
         }
 
+        private void ConfigurarTabela(ExcelWorksheet ws, int linhaAtual)
+        {
+            // Obter a tabela existente
+            var table = ws.Tables.FirstOrDefault(t => t.Name == "TabelaResiduos");
+            if (table != null)
+            {
+                // Excluir a tabela antiga
+                ws.Tables.Delete(table);
+            }
+
+            // Criar uma nova tabela com o intervalo atualizado
+            var tableRange = ws.Cells[$"A1:I{linhaAtual - 1}"];
+            table = ws.Tables.Add(tableRange, "TabelaResiduos");
+            table.TableStyle = TableStyles.Medium2;
+
+            // Configurar formatação das colunas
+            ws.Column(1).Style.Numberformat.Format = "dd/MM/yyyy"; // Data
+            ws.Column(8).Style.Numberformat.Format = "0.00%";      // Eficiência
+            ws.Column(9).Style.Numberformat.Format = "0.00%";      // Meta
+
+            // Auto-ajustar largura das colunas
+            ws.Cells[ws.Dimension.Address].AutoFitColumns();
+
+            // Aplicar formatação condicional para eficiência
+            var eficienciaRange = ws.Cells[$"H2:H{linhaAtual - 1}"];
+            var cfRule = eficienciaRange.ConditionalFormatting.AddTwoColorScale();
+            cfRule.LowValue.Color = Color.FromArgb(255, 199, 206);  // Vermelho claro
+            cfRule.HighValue.Color = Color.FromArgb(198, 239, 206); // Verde claro
+        }
+        private double CalcularEficiencia(Residuo residuo)
+        {
+            int totalIdent = residuo.IdentificacaoCf + residuo.IdentificacaoNcf;
+            int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
+
+            if (totalIdent + totalSep == 0) return 0;
+
+            return (double)(residuo.IdentificacaoCf + residuo.SeparacaoCf) / (totalIdent + totalSep);
+        }
+
+        private void CriarGraficoEficiencia(ExcelPackage pkg, List<Residuo> residuos)
+        {
+            var wsGrafico = pkg.Workbook.Worksheets.Any(s => s.Name == "Gráfico") ?
+                pkg.Workbook.Worksheets["Gráfico"] :
+                pkg.Workbook.Worksheets.Add("Gráfico");
+
+            wsGrafico.Drawings.Clear();
+
+            // Encontrar a última linha com dados
+            int ultimaLinha = wsGrafico.Dimension?.End.Row ?? 1;
+
+            // Agrupar dados por semana e calcular média desconsiderando zeros
+            var dadosAgrupados = residuos
+                .GroupBy(r => r.Semana)
+                .Select(g => new
+                {
+                    Semana = g.Key,
+                    TotalIdent = g.Sum(r => r.IdentificacaoCf + r.IdentificacaoNcf),
+                    TotalSep = g.Sum(r => r.SeparacaoCf + r.SeparacaoNcf),
+                    TotalConformes = g.Sum(r => r.IdentificacaoCf + r.SeparacaoCf)
+                })
+                .Select(g => new
+                {
+                    Semana = g.Semana,
+                    MediaEficiencia = (g.TotalIdent + g.TotalSep) > 0 ?
+                        (double)g.TotalConformes / (g.TotalIdent + g.TotalSep) : 0
+                })
+                .Where(g => g.MediaEficiencia > 0)
+                .OrderBy(x => x.Semana)
+                .ToList();
+
+            // Se não houver cabeçalho, adiciona
+            if (ultimaLinha == 1 || wsGrafico.Cells["A1"].Value == null)
+            {
+                wsGrafico.Cells["A1"].Value = "Semana";
+                wsGrafico.Cells["B1"].Value = "Eficiência";
+                wsGrafico.Cells["C1"].Value = "Meta";
+                ultimaLinha = 1;
+            }
+
+            // Procurar dados existentes para a semana atual
+            foreach (var dado in dadosAgrupados)
+            {
+                bool semanaEncontrada = false;
+                for (int i = 2; i <= ultimaLinha; i++)
+                {
+                    if (wsGrafico.Cells[$"A{i}"].Value != null &&
+                        Convert.ToInt32(wsGrafico.Cells[$"A{i}"].Value) == dado.Semana)
+                    {
+                        // Atualiza dados existentes
+                        wsGrafico.Cells[$"B{i}"].Value = dado.MediaEficiencia;
+                        wsGrafico.Cells[$"C{i}"].Value = 0.8;
+                        semanaEncontrada = true;
+                        break;
+                    }
+                }
+
+                if (!semanaEncontrada)
+                {
+                    // Adiciona nova linha
+                    ultimaLinha++;
+                    wsGrafico.Cells[$"A{ultimaLinha}"].Value = dado.Semana;
+                    wsGrafico.Cells[$"B{ultimaLinha}"].Value = dado.MediaEficiencia;
+                    wsGrafico.Cells[$"C{ultimaLinha}"].Value = 0.8;
+                }
+            }
+
+            // Formatar células como percentual
+            var rangeEficiencia = wsGrafico.Cells[$"B2:B{ultimaLinha}"];
+            var rangeMeta = wsGrafico.Cells[$"C2:C{ultimaLinha}"];
+            rangeEficiencia.Style.Numberformat.Format = "0.00%";
+            rangeMeta.Style.Numberformat.Format = "0.00%";
+
+            if (ultimaLinha > 1)
+            {
+                var chart = wsGrafico.Drawings.AddChart("GraficoEficiencia", eChartType.ColumnClustered);
+
+                // Série de barras para eficiência
+                var eficienciaSerie = chart.Series.Add(wsGrafico.Cells[$"B2:B{ultimaLinha}"],
+                    wsGrafico.Cells[$"A2:A{ultimaLinha}"]);
+                eficienciaSerie.Header = "Eficiência";
+
+                // Criar série de linha para meta
+                var linhaMeta = chart.PlotArea.ChartTypes.Add(eChartType.Line);
+                var metaSerie = linhaMeta.Series.Add(wsGrafico.Cells[$"C2:C{ultimaLinha}"],
+                    wsGrafico.Cells[$"A2:A{ultimaLinha}"]);
+                metaSerie.Header = "Meta";
+
+                // Configurar aparência
+                chart.Title.Text = "Eficiência por Semana";
+                chart.XAxis.Title.Text = "Semana";
+                chart.YAxis.Title.Text = "Eficiência";
+
+                // Formatar eixo Y como percentual
+                chart.YAxis.Format = "0%";
+
+                // Posicionar e dimensionar o gráfico
+                chart.SetPosition(1, 0, 1, 0);
+                chart.SetSize(800, 400);
+            }
+        }
 
         private void btn_salvar_Click(object sender, EventArgs e)
         {
@@ -455,33 +595,45 @@ namespace Coleta_Seletiva
 
             if (dadosValidos)
             {
-                using (SaveFileDialog saveDialog = new SaveFileDialog())
+                try
                 {
-                    saveDialog.Filter = "Arquivos Excel|*.xlsx";
-                    saveDialog.Title = "Salvar arquivo Excel";
-                    saveDialog.FileName = "Coleta_Seletiva.xlsx";
+                    // Capturar screenshot primeiro
+                    CaptureFormScreenshot();
 
-                    if (saveDialog.ShowDialog() == DialogResult.OK)
+                    // Criar diretório se não existir
+                    if (!Directory.Exists(CAMINHO_BASE))
                     {
-                        var residuos = (List<Residuo>)lista_verificacao.DataSource;
-                        GerarExcel(residuos, saveDialog.FileName);
-                        GerarNome(residuos, saveDialog.FileName);
-
-                        // Limpar o DataGrid após salvar
-                        lista_verificacao.DataSource = null;
-                        lista_verificacao.Rows.Clear();
-
-                        txt_nome.Text = string.Empty;
-                        txt_data.Text = string.Empty;
-                        cb_turno.SelectedIndex = -1;
-                        cb_modulo.SelectedIndex = -1;
-                        cb_ilha.SelectedIndex = -1;
-                        cb_equipe.SelectedIndex = -1;
-                        cb_avaliador.SelectedIndex = -1;
-
-                        // Recarregar dados iniciais se necessário
-                        Archive_Load(this, EventArgs.Empty);
+                        Directory.CreateDirectory(CAMINHO_BASE);
                     }
+
+                    // Caminho completo do arquivo Excel
+                    string caminhoExcel = Path.Combine(CAMINHO_BASE, NOME_ARQUIVO_EXCEL);
+
+                    var residuos = (List<Residuo>)lista_verificacao.DataSource;
+                    GerarExcel(residuos, caminhoExcel);
+                    GerarNome(residuos, caminhoExcel);
+
+                    // Limpar o DataGrid após salvar
+                    lista_verificacao.DataSource = null;
+                    lista_verificacao.Rows.Clear();
+
+                    // Limpar campos
+                    txt_nome.Text = string.Empty;
+                    txt_data.Text = string.Empty;
+                    cb_turno.SelectedIndex = -1;
+                    cb_modulo.SelectedIndex = -1;
+                    cb_ilha.SelectedIndex = -1;
+                    cb_equipe.SelectedIndex = -1;
+                    cb_avaliador.SelectedIndex = -1;
+
+                    // Recarregar dados iniciais
+                    Archive_Load(this, EventArgs.Empty);
+
+                    MessageBox.Show("Dados salvos com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao salvar os dados: {ex.Message}");
                 }
             }
             else

@@ -61,7 +61,7 @@
             lbl_titulo.Location = new Point(0, 0);
             lbl_titulo.Margin = new Padding(10, 0, 3, 0);
             lbl_titulo.Name = "lbl_titulo";
-            lbl_titulo.Size = new Size(1184, 55);
+            lbl_titulo.Size = new Size(1384, 55);
             lbl_titulo.TabIndex = 1;
             lbl_titulo.Text = "AVALIAÇÃO DE EFICIÊNCIA DA COLETA SELETIVA";
             lbl_titulo.TextAlign = ContentAlignment.TopCenter;
@@ -74,7 +74,7 @@
             lbl_dados.ForeColor = SystemColors.ButtonHighlight;
             lbl_dados.Location = new Point(6, 62);
             lbl_dados.Name = "lbl_dados";
-            lbl_dados.Size = new Size(1160, 32);
+            lbl_dados.Size = new Size(1360, 32);
             lbl_dados.TabIndex = 2;
             lbl_dados.Text = "DADOS DA INSPEÇÃO";
             // 
@@ -85,7 +85,7 @@
             txt_dados.ForeColor = SystemColors.ActiveCaptionText;
             txt_dados.Location = new Point(6, 94);
             txt_dados.Name = "txt_dados";
-            txt_dados.Size = new Size(1154, 45);
+            txt_dados.Size = new Size(1354, 45);
             txt_dados.TabIndex = 3;
             txt_dados.Text = "Durante a avaliação da coleta seletiva, é fundamental verificar três aspectos principais: a identificação dos coletores, as condições físicas dos coletores e a correta separação dos resíduos.\r\n\r\n";
             // 
@@ -96,7 +96,7 @@
             lbl_data.ForeColor = Color.MidnightBlue;
             lbl_data.Location = new Point(12, 145);
             lbl_data.Name = "lbl_data";
-            lbl_data.Size = new Size(49, 20);
+            lbl_data.Size = new Size(249, 200);
             lbl_data.TabIndex = 4;
             lbl_data.Text = "DATA:";
             // 
@@ -117,7 +117,7 @@
             lbl_modulo.ForeColor = Color.MidnightBlue;
             lbl_modulo.Location = new Point(405, 144);
             lbl_modulo.Name = "lbl_modulo";
-            lbl_modulo.Size = new Size(74, 20);
+            lbl_modulo.Size = new Size(274, 200);
             lbl_modulo.TabIndex = 7;
             lbl_modulo.Text = "MÓDULO:";
             // 
@@ -128,7 +128,7 @@
             lbl_ilha.ForeColor = Color.MidnightBlue;
             lbl_ilha.Location = new Point(620, 144);
             lbl_ilha.Name = "lbl_ilha";
-            lbl_ilha.Size = new Size(51, 20);
+            lbl_ilha.Size = new Size(251, 200);
             lbl_ilha.TabIndex = 9;
             lbl_ilha.Text = "ILHA:";
             // 
@@ -139,7 +139,7 @@
             lbl_equipe.ForeColor = Color.MidnightBlue;
             lbl_equipe.Location = new Point(812, 146);
             lbl_equipe.Name = "lbl_equipe";
-            lbl_equipe.Size = new Size(74, 20);
+            lbl_equipe.Size = new Size(274, 200);
             lbl_equipe.TabIndex = 11;
             lbl_equipe.Text = "EQUIPE:";
             // 
@@ -150,7 +150,7 @@
             lbl_avaliador.ForeColor = Color.MidnightBlue;
             lbl_avaliador.Location = new Point(12, 185);
             lbl_avaliador.Name = "lbl_avaliador";
-            lbl_avaliador.Size = new Size(95, 20);
+            lbl_avaliador.Size = new Size(295, 200);
             lbl_avaliador.TabIndex = 15;
             lbl_avaliador.Text = "AVALIADOR:";
             // 
@@ -192,7 +192,7 @@
             lbl_lista.ForeColor = SystemColors.ButtonHighlight;
             lbl_lista.Location = new Point(6, 220);
             lbl_lista.Name = "lbl_lista";
-            lbl_lista.Size = new Size(1160, 32);
+            lbl_lista.Size = new Size(1360, 32);
             lbl_lista.TabIndex = 20;
             lbl_lista.Text = "LISTA DE VERIFICAÇÃO";
             // 
@@ -216,9 +216,9 @@
             lista_verificacao.BorderStyle = BorderStyle.None;
             lista_verificacao.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             lista_verificacao.GridColor = Color.MidnightBlue;
-            lista_verificacao.Location = new Point(-2, 257);
+            lista_verificacao.Location = new Point(6, 257);
             lista_verificacao.Name = "lista_verificacao";
-            lista_verificacao.Size = new Size(1160, 412);
+            lista_verificacao.Size = new Size(1360, 592);
             lista_verificacao.TabIndex = 22;
             lista_verificacao.EditingControlShowing += lista_verificacao_EditingControlShowing;
             // 
@@ -244,12 +244,11 @@
             // 
             // lbl_nome
             // 
-            lbl_nome.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_nome.Font = new Font("Segoe UI", 11F);
             lbl_nome.ForeColor = Color.MidnightBlue;
             lbl_nome.Location = new Point(256, 189);
             lbl_nome.Name = "lbl_nome";
-            lbl_nome.Size = new Size(95, 20);
+            lbl_nome.Size = new Size(60, 20);
             lbl_nome.TabIndex = 25;
             lbl_nome.Text = "NOME:";
             // 
@@ -278,7 +277,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonHighlight;
-            ClientSize = new Size(1184, 681);
+            ClientSize = new Size(1384, 861);
             Controls.Add(cb_modulo);
             Controls.Add(txt_nome);
             Controls.Add(lbl_nome);
