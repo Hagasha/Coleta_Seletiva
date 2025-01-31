@@ -59,15 +59,5 @@ namespace Coleta_Seletiva.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap MAXSC_LOGO_W2 {
-            get {
-                object obj = ResourceManager.GetObject("MAXSC_LOGO_W2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }
