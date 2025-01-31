@@ -58,6 +58,7 @@
             lbl_titulo.BorderStyle = BorderStyle.FixedSingle;
             lbl_titulo.Dock = DockStyle.Top;
             lbl_titulo.Font = new Font("Arial", 35F, FontStyle.Bold);
+            lbl_titulo.ImageAlign = ContentAlignment.TopLeft;
             lbl_titulo.Location = new Point(0, 0);
             lbl_titulo.Margin = new Padding(10, 0, 3, 0);
             lbl_titulo.Name = "lbl_titulo";
@@ -91,12 +92,11 @@
             // 
             // lbl_data
             // 
-            lbl_data.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_data.Font = new Font("Segoe UI", 11F);
             lbl_data.ForeColor = Color.MidnightBlue;
-            lbl_data.Location = new Point(12, 145);
+            lbl_data.Location = new Point(6, 143);
             lbl_data.Name = "lbl_data";
-            lbl_data.Size = new Size(249, 200);
+            lbl_data.Size = new Size(49, 22);
             lbl_data.TabIndex = 4;
             lbl_data.Text = "DATA:";
             // 
@@ -112,45 +112,41 @@
             // 
             // lbl_modulo
             // 
-            lbl_modulo.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_modulo.Font = new Font("Segoe UI", 11F);
             lbl_modulo.ForeColor = Color.MidnightBlue;
             lbl_modulo.Location = new Point(405, 144);
             lbl_modulo.Name = "lbl_modulo";
-            lbl_modulo.Size = new Size(274, 200);
+            lbl_modulo.Size = new Size(74, 23);
             lbl_modulo.TabIndex = 7;
             lbl_modulo.Text = "MÓDULO:";
             // 
             // lbl_ilha
             // 
-            lbl_ilha.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_ilha.Font = new Font("Segoe UI", 11F);
             lbl_ilha.ForeColor = Color.MidnightBlue;
             lbl_ilha.Location = new Point(620, 144);
             lbl_ilha.Name = "lbl_ilha";
-            lbl_ilha.Size = new Size(251, 200);
+            lbl_ilha.Size = new Size(51, 22);
             lbl_ilha.TabIndex = 9;
             lbl_ilha.Text = "ILHA:";
             // 
             // lbl_equipe
             // 
-            lbl_equipe.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_equipe.Font = new Font("Segoe UI", 11F);
             lbl_equipe.ForeColor = Color.MidnightBlue;
             lbl_equipe.Location = new Point(812, 146);
             lbl_equipe.Name = "lbl_equipe";
-            lbl_equipe.Size = new Size(274, 200);
+            lbl_equipe.Size = new Size(59, 18);
             lbl_equipe.TabIndex = 11;
             lbl_equipe.Text = "EQUIPE:";
             // 
             // lbl_avaliador
             // 
-            lbl_avaliador.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbl_avaliador.Font = new Font("Segoe UI", 11F);
             lbl_avaliador.ForeColor = Color.MidnightBlue;
-            lbl_avaliador.Location = new Point(12, 185);
+            lbl_avaliador.Location = new Point(0, 185);
             lbl_avaliador.Name = "lbl_avaliador";
-            lbl_avaliador.Size = new Size(295, 200);
+            lbl_avaliador.Size = new Size(97, 24);
             lbl_avaliador.TabIndex = 15;
             lbl_avaliador.Text = "AVALIADOR:";
             // 
@@ -244,9 +240,10 @@
             // 
             // lbl_nome
             // 
+            lbl_nome.BackColor = Color.White;
             lbl_nome.Font = new Font("Segoe UI", 11F);
             lbl_nome.ForeColor = Color.MidnightBlue;
-            lbl_nome.Location = new Point(256, 189);
+            lbl_nome.Location = new Point(248, 188);
             lbl_nome.Name = "lbl_nome";
             lbl_nome.Size = new Size(60, 20);
             lbl_nome.TabIndex = 25;

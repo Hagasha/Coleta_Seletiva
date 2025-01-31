@@ -9,6 +9,8 @@ namespace Coleta_Seletiva.Models
 {
     internal class Residuo
     {
+        internal double meta;
+
         public string Etiqueta { get; set; }
         public string Tipo { get; set; }
         public Image Imagem { get; set; }
