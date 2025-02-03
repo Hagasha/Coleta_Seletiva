@@ -136,7 +136,7 @@
             lbl_equipe.ForeColor = Color.MidnightBlue;
             lbl_equipe.Location = new Point(812, 146);
             lbl_equipe.Name = "lbl_equipe";
-            lbl_equipe.Size = new Size(59, 18);
+            lbl_equipe.Size = new Size(61, 21);
             lbl_equipe.TabIndex = 11;
             lbl_equipe.Text = "EQUIPE:";
             // 
@@ -165,7 +165,7 @@
             cb_equipe.BackColor = Color.DeepSkyBlue;
             cb_equipe.FormattingEnabled = true;
             cb_equipe.Items.AddRange(new object[] { "Buyoff", "Equipe 1 e 2", "Equipe 3 e 4", "Equipe 5", "Equipe 6", "Equipe 7" });
-            cb_equipe.Location = new Point(892, 144);
+            cb_equipe.Location = new Point(879, 144);
             cb_equipe.Name = "cb_equipe";
             cb_equipe.Size = new Size(129, 23);
             cb_equipe.TabIndex = 18;

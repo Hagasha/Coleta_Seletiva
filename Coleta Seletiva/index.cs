@@ -21,8 +21,8 @@ namespace Coleta_Seletiva
 {
     public partial class Archive : Form
     {
-        private const string CAMINHO_BASE = @"\\VWTBRESHFSCO\Modulos\Maxion\POWER_BI\Arquivos Coleta Seletiva";
-        private const string CAMINHO_SCREENSHOTS = @"\\VWTBRESHFSCO\Modulos\Maxion\POWER_BI\Arquivos Coleta Seletiva\Screenshots";
+        private const string CAMINHO_BASE = @"\\VWTBRESHFSCO\Modulos\Maxion\MANUFATURA\Arquivos Coleta Seletiva";
+        private const string CAMINHO_SCREENSHOTS = @"\\VWTBRESHFSCO\Modulos\Maxion\MANUFATURA\Arquivos Coleta Seletiva\Screenshots";
         private const string NOME_ARQUIVO_EXCEL = "Avaliacao_Coleta_Seletiva.xlsx";
 
         public Archive()
@@ -401,9 +401,9 @@ namespace Coleta_Seletiva
                             DayOfWeek.Monday);
 
                         // Cálculo da eficiência
-                        double eficiencia = CalcularEficiencia(residuo);
-                        double separacao = CalcularSeparacao(residuo);
-                        double identificacao = CalcularIdentificacao(residuo);
+                        double? eficiencia = CalcularEficiencia(residuo);
+                        double? separacao = CalcularSeparacao(residuo);
+                        double? identificacao = CalcularIdentificacao(residuo);
                         // Preencher dados na nova ordem
                         ws.Cells[$"A{linhaAtual}"].Value = data;
                         ws.Cells[$"B{linhaAtual}"].Value = residuo.Ano;
@@ -417,7 +417,7 @@ namespace Coleta_Seletiva
                         ws.Cells[$"J{linhaAtual}"].Value = identificacao;
                         ws.Cells[$"K{linhaAtual}"].Value = separacao;
                         ws.Cells[$"L{linhaAtual}"].Value = eficiencia;
-                        ws.Cells[$"M{linhaAtual}"].Value = 0.8; 
+                        ws.Cells[$"M{linhaAtual}"].Value = 0.9; 
                         ws.Cells[$"N{linhaAtual}"].Value = cb_avaliador.Text;
 
                         ws.Cells[$"J{linhaAtual}"].Style.Numberformat.Format = "0.00%";
@@ -437,7 +437,7 @@ namespace Coleta_Seletiva
                     pkg.Save();
                 }
 
-                MessageBox.Show("Dados adicionados com sucesso!");
+                MessageBox.Show("Dados adicionados a planilha com sucesso!");
             }
             catch (Exception ex)
             {
@@ -462,9 +462,9 @@ namespace Coleta_Seletiva
 
             // Configurar formatação das colunas
             ws.Column(1).Style.Numberformat.Format = "dd/MM/yyyy";
-            ws.Column(10).Style.Numberformat.Format = "0.00%";      // Eficiência
-            ws.Column(11).Style.Numberformat.Format = "0.00%";      // Meta
-            ws.Column(12).Style.Numberformat.Format = "0.00%";      // Eficiência
+            ws.Column(10).Style.Numberformat.Format = "0.00%";      
+            ws.Column(11).Style.Numberformat.Format = "0.00%";      
+            ws.Column(12).Style.Numberformat.Format = "0.00%";      
             ws.Column(13).Style.Numberformat.Format = "0.00%";
 
             // Auto-ajustar largura das colunas
@@ -473,38 +473,33 @@ namespace Coleta_Seletiva
             // Aplicar formatação condicional para eficiência
             var eficienciaRange = ws.Cells[$"L2:L{linhaAtual - 1}"];
             var cfRule = eficienciaRange.ConditionalFormatting.AddTwoColorScale();
-            cfRule.LowValue.Color = Color.FromArgb(255, 199, 206);  // Vermelho claro
-            cfRule.HighValue.Color = Color.FromArgb(198, 239, 206); // Verde claro
+            cfRule.LowValue.Color = Color.FromArgb(255, 199, 206);  
+            cfRule.HighValue.Color = Color.FromArgb(198, 239, 206); 
         }
-        private double CalcularEficiencia(Residuo residuo)
+        private double? CalcularEficiencia(Residuo residuo) // Alterado para retornar double?
         {
             int totalIdent = residuo.IdentificacaoCf + residuo.IdentificacaoNcf;
             int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
 
-            if (totalIdent + totalSep == 0) return 0;
+            if (totalIdent + totalSep == 0) return null; // Retorna null para valores inválidos
 
-            return (double)(residuo.IdentificacaoCf + residuo.SeparacaoCf) / (totalIdent + totalSep);
+            double eficiencia = (double)(residuo.IdentificacaoCf + residuo.SeparacaoCf) / (totalIdent + totalSep);
+            return eficiencia;
         }
 
-        private double CalcularSeparacao(Residuo residuo)
+        // Modifique também os métodos de cálculo de separação e identificação se necessário
+        private double? CalcularSeparacao(Residuo residuo)
+        {
+            int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
+            return totalSep == 0 ? null : (double)residuo.SeparacaoCf / totalSep;
+        }
+
+        private double? CalcularIdentificacao(Residuo residuo)
         {
             int totalIdent = residuo.IdentificacaoCf + residuo.IdentificacaoNcf;
-            int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
-
-            if (totalIdent + totalSep == 0) return 0;
-
-            return (double)(residuo.SeparacaoCf) / (totalSep);
+            return totalIdent == 0 ? null : (double)residuo.IdentificacaoCf / totalIdent;
         }
 
-        private double CalcularIdentificacao(Residuo residuo)
-        {
-            int totalIdent = residuo.IdentificacaoCf + residuo.IdentificacaoNcf;
-            int totalSep = residuo.SeparacaoCf + residuo.SeparacaoNcf;
-
-            if (totalIdent + totalSep == 0) return 0;
-
-            return (double)(residuo.IdentificacaoCf) / (totalIdent);
-        }
 
         private void CriarGraficoEficiencia(ExcelPackage pkg, List<Residuo> residuos)
         {
@@ -523,6 +518,8 @@ namespace Coleta_Seletiva
                 MessageBox.Show("Não há dados na planilha de resíduos para gerar o gráfico.");
                 return;
             }
+
+
 
             var sourceRange = wsResiduos.Cells[wsResiduos.Dimension.Address];
             var pivotTable = wsGrafico.PivotTables.Add(wsGrafico.Cells["A3"], sourceRange, "PivotEficiencia");
@@ -611,7 +608,7 @@ namespace Coleta_Seletiva
                     // Recarregar dados iniciais
                     Archive_Load(this, EventArgs.Empty);
 
-                    MessageBox.Show("Dados salvos com sucesso!");
+                    MessageBox.Show("formulário capturado com sucesso!");
                 }
                 catch (Exception ex)
                 {
@@ -665,7 +662,7 @@ namespace Coleta_Seletiva
                 }
                 else
                 {
-                    row.ErrorText = string.Empty; // Limpa o erro
+                    row.ErrorText = string.Empty;
                 }
             }
         }
